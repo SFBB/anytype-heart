@@ -14,12 +14,6 @@ on:
         description: 'Run perf test times'
         required: true
         default: '10'
-  schedule:
-    - cron: '0 1 * * *' # every day at 1am
-      filters:
-        branches:
-          include:
-            - 'main'
 
 permissions:
   actions: 'write'
