@@ -1088,10 +1088,6 @@
     - [Rpc.Object.SubscribeIds.Request](#anytype-Rpc-Object-SubscribeIds-Request)
     - [Rpc.Object.SubscribeIds.Response](#anytype-Rpc-Object-SubscribeIds-Response)
     - [Rpc.Object.SubscribeIds.Response.Error](#anytype-Rpc-Object-SubscribeIds-Response-Error)
-    - [Rpc.Object.ToBookmark](#anytype-Rpc-Object-ToBookmark)
-    - [Rpc.Object.ToBookmark.Request](#anytype-Rpc-Object-ToBookmark-Request)
-    - [Rpc.Object.ToBookmark.Response](#anytype-Rpc-Object-ToBookmark-Response)
-    - [Rpc.Object.ToBookmark.Response.Error](#anytype-Rpc-Object-ToBookmark-Response-Error)
     - [Rpc.Object.ToCollection](#anytype-Rpc-Object-ToCollection)
     - [Rpc.Object.ToCollection.Request](#anytype-Rpc-Object-ToCollection-Request)
     - [Rpc.Object.ToCollection.Response](#anytype-Rpc-Object-ToCollection-Response)
@@ -1650,7 +1646,6 @@
     - [Rpc.Object.ShareByLink.Response.Error.Code](#anytype-Rpc-Object-ShareByLink-Response-Error-Code)
     - [Rpc.Object.Show.Response.Error.Code](#anytype-Rpc-Object-Show-Response-Error-Code)
     - [Rpc.Object.SubscribeIds.Response.Error.Code](#anytype-Rpc-Object-SubscribeIds-Response-Error-Code)
-    - [Rpc.Object.ToBookmark.Response.Error.Code](#anytype-Rpc-Object-ToBookmark-Response-Error-Code)
     - [Rpc.Object.ToCollection.Response.Error.Code](#anytype-Rpc-Object-ToCollection-Response-Error-Code)
     - [Rpc.Object.ToSet.Response.Error.Code](#anytype-Rpc-Object-ToSet-Response-Error-Code)
     - [Rpc.Object.Undo.Response.Error.Code](#anytype-Rpc-Object-Undo-Response-Error-Code)
@@ -1723,8 +1718,6 @@
     - [Rpc.Workspace.Open.Response.Error.Code](#anytype-Rpc-Workspace-Open-Response-Error-Code)
     - [Rpc.Workspace.Select.Response.Error.Code](#anytype-Rpc-Workspace-Select-Response-Error-Code)
     - [Rpc.Workspace.SetInfo.Response.Error.Code](#anytype-Rpc-Workspace-SetInfo-Response-Error-Code)
-  
-    - [File-level Extensions](#pb_protos_commands-proto-extensions)
   
 - [pb/protos/events.proto](#pb_protos_events-proto)
     - [Event](#anytype-Event)
@@ -1871,6 +1864,7 @@
     - [Event.Chat.Update](#anytype-Event-Chat-Update)
     - [Event.Chat.UpdateMentionReadStatus](#anytype-Event-Chat-UpdateMentionReadStatus)
     - [Event.Chat.UpdateMessageReadStatus](#anytype-Event-Chat-UpdateMessageReadStatus)
+    - [Event.Chat.UpdateMessageSyncStatus](#anytype-Event-Chat-UpdateMessageSyncStatus)
     - [Event.Chat.UpdateReactions](#anytype-Event-Chat-UpdateReactions)
     - [Event.Chat.UpdateState](#anytype-Event-Chat-UpdateState)
     - [Event.File](#anytype-Event-File)
@@ -2257,7 +2251,6 @@
 | ObjectListExport | [Rpc.Object.ListExport.Request](#anytype-Rpc-Object-ListExport-Request) | [Rpc.Object.ListExport.Response](#anytype-Rpc-Object-ListExport-Response) |  |
 | ObjectExport | [Rpc.Object.Export.Request](#anytype-Rpc-Object-Export-Request) | [Rpc.Object.Export.Response](#anytype-Rpc-Object-Export-Response) |  |
 | ObjectBookmarkFetch | [Rpc.Object.BookmarkFetch.Request](#anytype-Rpc-Object-BookmarkFetch-Request) | [Rpc.Object.BookmarkFetch.Response](#anytype-Rpc-Object-BookmarkFetch-Response) |  |
-| ObjectToBookmark | [Rpc.Object.ToBookmark.Request](#anytype-Rpc-Object-ToBookmark-Request) | [Rpc.Object.ToBookmark.Response](#anytype-Rpc-Object-ToBookmark-Response) |  |
 | ObjectImport | [Rpc.Object.Import.Request](#anytype-Rpc-Object-Import-Request) | [Rpc.Object.Import.Response](#anytype-Rpc-Object-Import-Response) |  |
 | ObjectImportList | [Rpc.Object.ImportList.Request](#anytype-Rpc-Object-ImportList-Request) | [Rpc.Object.ImportList.Response](#anytype-Rpc-Object-ImportList-Response) |  |
 | ObjectImportNotionValidateToken | [Rpc.Object.Import.Notion.ValidateToken.Request](#anytype-Rpc-Object-Import-Notion-ValidateToken-Request) | [Rpc.Object.Import.Notion.ValidateToken.Response](#anytype-Rpc-Object-Import-Notion-ValidateToken-Response) |  |
@@ -16801,7 +16794,7 @@ Deletes the object, keys from the local store and unsubscribe from remote change
 | linksStateFilters | [Rpc.Object.ListExport.StateFilters](#anytype-Rpc-Object-ListExport-StateFilters) |  |  |
 | includeBacklinks | [bool](#bool) |  |  |
 | includeSpace | [bool](#bool) |  |  |
-| includeJsonSchema | [bool](#bool) |  |  |
+| mdIncludePropertiesAndSchema | [bool](#bool) |  | include properties frontmatter and schema in directory for markdown export |
 
 
 
@@ -18300,64 +18293,6 @@ DEPRECATED, GO-1926 |
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | code | [Rpc.Object.SubscribeIds.Response.Error.Code](#anytype-Rpc-Object-SubscribeIds-Response-Error-Code) |  |  |
-| description | [string](#string) |  |  |
-
-
-
-
-
-
-<a name="anytype-Rpc-Object-ToBookmark"></a>
-
-### Rpc.Object.ToBookmark
-
-
-
-
-
-
-
-<a name="anytype-Rpc-Object-ToBookmark-Request"></a>
-
-### Rpc.Object.ToBookmark.Request
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| contextId | [string](#string) |  |  |
-| url | [string](#string) |  |  |
-
-
-
-
-
-
-<a name="anytype-Rpc-Object-ToBookmark-Response"></a>
-
-### Rpc.Object.ToBookmark.Response
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| error | [Rpc.Object.ToBookmark.Response.Error](#anytype-Rpc-Object-ToBookmark-Response-Error) |  |  |
-| objectId | [string](#string) |  |  |
-
-
-
-
-
-
-<a name="anytype-Rpc-Object-ToBookmark-Response-Error"></a>
-
-### Rpc.Object.ToBookmark.Response.Error
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| code | [Rpc.Object.ToBookmark.Response.Error.Code](#anytype-Rpc-Object-ToBookmark-Response-Error-Code) |  |  |
 | description | [string](#string) |  |  |
 
 
@@ -21197,6 +21132,7 @@ Available undo/redo operations
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | error | [Rpc.Space.SetOrder.Response.Error](#anytype-Rpc-Space-SetOrder-Response-Error) |  |  |
+| spaceViewOrder | [string](#string) | repeated | final order of space view ids with their lexids |
 
 
 
@@ -26197,19 +26133,6 @@ Middleware-to-front-end response, that can contain a NULL error or a non-NULL er
 
 
 
-<a name="anytype-Rpc-Object-ToBookmark-Response-Error-Code"></a>
-
-### Rpc.Object.ToBookmark.Response.Error.Code
-
-
-| Name | Number | Description |
-| ---- | ------ | ----------- |
-| NULL | 0 |  |
-| UNKNOWN_ERROR | 1 |  |
-| BAD_INPUT | 2 | ... |
-
-
-
 <a name="anytype-Rpc-Object-ToCollection-Response-Error-Code"></a>
 
 ### Rpc.Object.ToCollection.Response.Error.Code
@@ -27246,14 +27169,6 @@ Middleware-to-front-end response, that can contain a NULL error or a non-NULL er
 
  
 
-
-<a name="pb_protos_commands-proto-extensions"></a>
-
-### File-level Extensions
-| Extension | Type | Base | Number | Description |
-| --------- | ---- | ---- | ------ | ----------- |
-| no_auth | bool | .google.protobuf.MessageOptions | 7777 |  |
-
  
 
  
@@ -27270,7 +27185,8 @@ Middleware-to-front-end response, that can contain a NULL error or a non-NULL er
 <a name="anytype-Event"></a>
 
 ### Event
-Event – type of message, that could be sent from a middleware to the corresponding front-end.
+Event – type of message, that could be sent from a middleware to the
+corresponding front-end.
 
 
 | Field | Type | Label | Description |
@@ -27390,7 +27306,8 @@ Event – type of message, that could be sent from a middleware to the correspon
 <a name="anytype-Event-Account-Show"></a>
 
 ### Event.Account.Show
-Message, that will be sent to the front on each account found after an AccountRecoverRequest
+Message, that will be sent to the front on each account found after an
+AccountRecoverRequest
 
 
 | Field | Type | Label | Description |
@@ -27436,8 +27353,8 @@ Event to show internal blocks on a client.
 Example Scenarios
 A. Block Creation
 1. Block A have been created on a client C1
-2. Client C2 receives Event.Block.Add(Block A), Event.Block.Update(Page.children)
-B. Partial block load
+2. Client C2 receives Event.Block.Add(Block A),
+Event.Block.Update(Page.children) B. Partial block load
 1. Client C1 opens Page1, that contains, for example, 133 blocks.
 2. M -&gt; F: ShowFullScreen(Root, blocks1-50)
 3. M -&gt; F: Block.Add(blocks51-100)
@@ -27668,8 +27585,8 @@ sent when the view have been changed or added
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | id | [string](#string) |  | dataview block&#39;s id |
-| viewId | [string](#string) |  | view id, client should double check this to make sure client doesn&#39;t switch the active view in the middle |
-| view | [model.Block.Content.Dataview.View](#anytype-model-Block-Content-Dataview-View) |  |  |
+| viewId | [string](#string) |  | view id, client should double check this to make sure client |
+| view | [model.Block.Content.Dataview.View](#anytype-model-Block-Content-Dataview-View) |  | doesn&#39;t switch the active view in the middle |
 
 
 
@@ -27715,7 +27632,7 @@ sent when the view have been changed or added
 | groupBackgroundColors | [bool](#bool) |  | Enable backgrounds in groups |
 | pageLimit | [int32](#int32) |  | Limit of objects shown in widget |
 | defaultTemplateId | [string](#string) |  | Id of template object set default for the view |
-| defaultObjectTypeId | [string](#string) |  | Default object type that is chosen for new object created within the view |
+| defaultObjectTypeId | [string](#string) |  | Default object type that is chosen for new object created |
 
 
 
@@ -27983,10 +27900,11 @@ sent when the view have been changed or added
 <a name="anytype-Event-Block-FilesUpload"></a>
 
 ### Event.Block.FilesUpload
-Middleware to front end event message, that will be sent on one of this scenarios:
-Precondition: user A opened a block
+Middleware to front end event message, that will be sent on one of this
+scenarios: Precondition: user A opened a block
 1. User A drops a set of files/pictures/videos
-2. User A creates a MediaBlock and drops a single media, that corresponds to its type.
+2. User A creates a MediaBlock and drops a single media, that corresponds
+to its type.
 
 
 | Field | Type | Label | Description |
@@ -29555,6 +29473,23 @@ Precondition: user A opened a block
 
 
 
+<a name="anytype-Event-Chat-UpdateMessageSyncStatus"></a>
+
+### Event.Chat.UpdateMessageSyncStatus
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| ids | [string](#string) | repeated |  |
+| isSynced | [bool](#bool) |  |  |
+| subIds | [string](#string) | repeated |  |
+
+
+
+
+
+
 <a name="anytype-Event-Chat-UpdateReactions"></a>
 
 ### Event.Chat.UpdateReactions
@@ -29796,10 +29731,13 @@ Precondition: user A opened a block
 | chatAdd | [Event.Chat.Add](#anytype-Event-Chat-Add) |  |  |
 | chatUpdate | [Event.Chat.Update](#anytype-Event-Chat-Update) |  |  |
 | chatUpdateReactions | [Event.Chat.UpdateReactions](#anytype-Event-Chat-UpdateReactions) |  |  |
-| chatUpdateMessageReadStatus | [Event.Chat.UpdateMessageReadStatus](#anytype-Event-Chat-UpdateMessageReadStatus) |  | received to update per-message read status (if needed to highlight the unread messages in the UI) |
-| chatUpdateMentionReadStatus | [Event.Chat.UpdateMentionReadStatus](#anytype-Event-Chat-UpdateMentionReadStatus) |  | received to update per-message mention read status (if needed to highlight the unread mentions in the UI) |
+| chatUpdateMessageReadStatus | [Event.Chat.UpdateMessageReadStatus](#anytype-Event-Chat-UpdateMessageReadStatus) |  | received to update per-message read status (if needed to |
+| chatUpdateMentionReadStatus | [Event.Chat.UpdateMentionReadStatus](#anytype-Event-Chat-UpdateMentionReadStatus) |  | highlight the unread messages in the UI)
+
+received to update per-message mention read status (if needed |
+| chatUpdateMessageSyncStatus | [Event.Chat.UpdateMessageSyncStatus](#anytype-Event-Chat-UpdateMessageSyncStatus) |  | to highlight the unread mentions in the UI) |
 | chatDelete | [Event.Chat.Delete](#anytype-Event-Chat-Delete) |  |  |
-| chatStateUpdate | [Event.Chat.UpdateState](#anytype-Event-Chat-UpdateState) |  | in case new unread messages received or chat state changed (e.g. message read on another device) |
+| chatStateUpdate | [Event.Chat.UpdateState](#anytype-Event-Chat-UpdateState) |  | in case new unread messages received or chat state changed |
 
 
 
@@ -29884,7 +29822,8 @@ Precondition: user A opened a block
 <a name="anytype-Event-Object-Details-Amend"></a>
 
 ### Event.Object.Details.Amend
-Amend (i.e. add a new key-value pair or update an existing key-value pair) existing state
+Amend (i.e. add a new key-value pair or update an existing key-value
+pair) existing state
 
 
 | Field | Type | Label | Description |
@@ -29923,8 +29862,8 @@ Overwrite current state
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | id | [string](#string) |  | context objectId |
-| details | [google.protobuf.Struct](#google-protobuf-Struct) |  | can not be a partial state. Should replace client details state |
-| subIds | [string](#string) | repeated |  |
+| details | [google.protobuf.Struct](#google-protobuf-Struct) |  | can not be a partial state. Should replace client details |
+| subIds | [string](#string) | repeated | state |
 
 
 
@@ -30267,8 +30206,8 @@ Removes document from subscription
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | targetId | [string](#string) |  |  |
-| targetName | [string](#string) |  | pluralName (if exists) for types, fallback to name. Special cases for &#34;bin&#34; and &#34;favorites&#34; |
-| widgetBlockId | [string](#string) |  |  |
+| targetName | [string](#string) |  | pluralName (if exists) for types, fallback to |
+| widgetBlockId | [string](#string) |  | name. Special cases for &#34;bin&#34; and &#34;favorites&#34; |
 
 
 
@@ -30298,6 +30237,7 @@ Removes document from subscription
 | network | [Event.Space.Network](#anytype-Event-Space-Network) |  |  |
 | error | [Event.Space.SyncError](#anytype-Event-Space-SyncError) |  |  |
 | syncingObjectsCounter | [int64](#int64) |  |  |
+| notSyncedFilesCounter | [int64](#int64) |  |  |
 
 
 
@@ -30444,8 +30384,8 @@ Removes document from subscription
 <a name="anytype-Event-User-Block-Join"></a>
 
 ### Event.User.Block.Join
-Middleware to front end event message, that will be sent in this scenario:
-Precondition: user A opened a block
+Middleware to front end event message, that will be sent in this
+scenario: Precondition: user A opened a block
 1. User B opens the same block
 2. User A receives a message about p.1
 
@@ -30462,8 +30402,8 @@ Precondition: user A opened a block
 <a name="anytype-Event-User-Block-Left"></a>
 
 ### Event.User.Block.Left
-Middleware to front end event message, that will be sent in this scenario:
-Precondition: user A and user B opened the same block
+Middleware to front end event message, that will be sent in this
+scenario: Precondition: user A and user B opened the same block
 1. User B closes the block
 2. User A receives a message about p.1
 
@@ -30480,8 +30420,8 @@ Precondition: user A and user B opened the same block
 <a name="anytype-Event-User-Block-SelectRange"></a>
 
 ### Event.User.Block.SelectRange
-Middleware to front end event message, that will be sent in this scenario:
-Precondition: user A and user B opened the same block
+Middleware to front end event message, that will be sent in this
+scenario: Precondition: user A and user B opened the same block
 1. User B selects some inner blocks
 2. User A receives a message about p.1
 
@@ -30499,8 +30439,8 @@ Precondition: user A and user B opened the same block
 <a name="anytype-Event-User-Block-TextRange"></a>
 
 ### Event.User.Block.TextRange
-Middleware to front end event message, that will be sent in this scenario:
-Precondition: user A and user B opened the same block
+Middleware to front end event message, that will be sent in this
+scenario: Precondition: user A and user B opened the same block
 1. User B sets cursor or selects a text region into a text block
 2. User A receives a message about p.1
 
@@ -30661,7 +30601,7 @@ Precondition: user A and user B opened the same block
 | NotConnected | 0 |  |
 | NotPossible | 1 |  |
 | Connected | 2 |  |
-| Restricted | 3 | only for ios for now, fallback to NotPossible if not implemented on client |
+| Restricted | 3 | only for ios for now, fallback to NotPossible if not |
 
 
 
@@ -31728,6 +31668,7 @@ Used to decode block meta only, without the content itself
 | reactions | [ChatMessage.Reactions](#anytype-model-ChatMessage-Reactions) |  | Reactions to the message |
 | read | [bool](#bool) |  | Message read status |
 | mentionRead | [bool](#bool) |  |  |
+| synced | [bool](#bool) |  |  |
 
 
 
@@ -32901,6 +32842,9 @@ stored |
 | NextMonth | 9 |  |
 | NumberOfDaysAgo | 10 |  |
 | NumberOfDaysNow | 11 |  |
+| LastYear | 12 |  |
+| CurrentYear | 13 |  |
+| NextYear | 14 |  |
 
 
 
@@ -33095,6 +33039,8 @@ stored |
 | Graphviz | 20 |  |
 | Sketchfab | 21 |  |
 | Image | 22 |  |
+| Drawio | 23 |  |
+| Spotify | 24 |  |
 
 
 

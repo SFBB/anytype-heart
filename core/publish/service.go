@@ -26,6 +26,7 @@ import (
 	"github.com/anyproto/anytype-heart/core/inviteservice"
 	"github.com/anyproto/anytype-heart/pb"
 	"github.com/anyproto/anytype-heart/pkg/lib/bundle"
+	"github.com/anyproto/anytype-heart/pkg/lib/core"
 	"github.com/anyproto/anytype-heart/pkg/lib/localstore/objectstore"
 	"github.com/anyproto/anytype-heart/pkg/lib/pb/model"
 	"github.com/anyproto/anytype-heart/space"
@@ -93,6 +94,7 @@ type service struct {
 	identityService      identity.Service
 	inviteService        inviteservice.InviteService
 	objectStore          objectstore.ObjectStore
+	tempDirService       core.TempDirProvider
 }
 
 func New() Service {
@@ -106,6 +108,7 @@ func (s *service) Init(a *app.App) error {
 	s.identityService = app.MustComponent[identity.Service](a)
 	s.inviteService = app.MustComponent[inviteservice.InviteService](a)
 	s.objectStore = app.MustComponent[objectstore.ObjectStore](a)
+	s.tempDirService = app.MustComponent[core.TempDirProvider](a)
 	return nil
 }
 
@@ -126,7 +129,7 @@ func uniqName() string {
 }
 
 func (s *service) exportToDir(ctx context.Context, spaceId, pageId string, includeSpaceInfo bool) (dirEntries []fs.DirEntry, exportPath string, err error) {
-	tempDir := os.TempDir()
+	tempDir := s.tempDirService.TempDir()
 	exportPath, _, err = s.exportService.Export(ctx, pb.RpcObjectListExportRequest{
 		SpaceId:          spaceId,
 		Format:           model.Export_Protobuf,
@@ -172,7 +175,7 @@ func (s *service) publishToPublishServer(ctx context.Context, spaceId, pageId, u
 		return err
 	}
 
-	tempPublishDir := filepath.Join(os.TempDir(), uniqName())
+	tempPublishDir := filepath.Join(s.tempDirService.TempDir(), uniqName())
 	defer os.RemoveAll(tempPublishDir)
 
 	if err := os.MkdirAll(tempPublishDir, 0777); err != nil {
@@ -452,7 +455,7 @@ func (s *service) PublishList(ctx context.Context, spaceId string) ([]*pb.RpcPub
 			Status:    pb.RpcPublishingPublishStatus(publish.Status),
 			Version:   publish.Version,
 			Timestamp: publish.Timestamp,
-			Size_:     publish.Size_,
+			Size_:     publish.Size,
 			JoinSpace: version.JoinSpace,
 			Details:   details,
 		})
@@ -496,7 +499,7 @@ func (s *service) ResolveUri(ctx context.Context, uri string) (*pb.RpcPublishing
 		Status:    pb.RpcPublishingPublishStatus(publish.Status),
 		Version:   publish.Version,
 		Timestamp: publish.Timestamp,
-		Size_:     publish.Size_,
+		Size_:     publish.Size,
 		JoinSpace: version.JoinSpace,
 	}, nil
 }
@@ -514,7 +517,7 @@ func (s *service) GetStatus(ctx context.Context, spaceId string, objectId string
 		Status:    pb.RpcPublishingPublishStatus(status.Status),
 		Version:   status.Version,
 		Timestamp: status.Timestamp,
-		Size_:     status.Size_,
+		Size_:     status.Size,
 		JoinSpace: version.JoinSpace,
 	}, nil
 }

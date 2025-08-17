@@ -5,6 +5,7 @@ import (
 	"net/url"
 	"path/filepath"
 	"strings"
+	"unicode"
 
 	"github.com/gogo/protobuf/types"
 	"github.com/yuin/goldmark/ast"
@@ -217,31 +218,26 @@ func (r *Renderer) renderThematicBreak(_ util.BufWriter,
 	return ast.WalkContinue, nil
 }
 
-func (r *Renderer) renderAutoLink(_ util.BufWriter,
-	source []byte,
-	node ast.Node,
-	entering bool) (ast.WalkStatus, error) {
+func (r *Renderer) renderAutoLink(_ util.BufWriter, source []byte, node ast.Node, entering bool) (ast.WalkStatus, error) {
 	n := node.(*ast.AutoLink)
 	if !entering {
 		return ast.WalkContinue, nil
 	}
 
-	destination := source
 	label := n.Label(source)
 	r.SetMarkStart()
 
 	start := int32(text.UTF16RuneCountString(r.GetText()))
 	labelLength := int32(text.UTF16RuneCount(label))
 
-	linkPath, err := url.PathUnescape(string(destination))
+	linkPath, err := url.PathUnescape(string(label))
 	if err != nil {
-		log.Errorf("failed to unescape destination %s", err)
-		linkPath = string(destination)
+		log.Errorf("failed to unescape label %s", err)
+		linkPath = string(label)
 	}
 
-	// add basefilepath
-	if !strings.HasPrefix(strings.ToLower(linkPath), "http://") &&
-		!strings.HasPrefix(strings.ToLower(linkPath), "https://") {
+	if !IsUrl(linkPath) {
+		// Treat as a file path if no URL scheme
 		linkPath = filepath.Join(r.GetBaseFilepath(), linkPath)
 		linkPath = cleanLinkSection(linkPath)
 	}
@@ -253,6 +249,32 @@ func (r *Renderer) renderAutoLink(_ util.BufWriter,
 	})
 	r.AddTextToBuffer(string(util.EscapeHTML(label)))
 	return ast.WalkContinue, nil
+}
+
+func IsUrl(raw string) bool {
+	colon := strings.IndexByte(raw, ':')
+
+	if colon > 0 {
+		scheme := raw[:colon]
+		if isASCIIAlpha(scheme) {
+			return true
+		}
+	}
+
+	if u, err := url.Parse(raw); err == nil && u.Scheme != "" && len(u.Scheme) > 1 {
+		return true
+	}
+
+	return false
+}
+
+func isASCIIAlpha(s string) bool {
+	for _, r := range s {
+		if !unicode.IsLetter(r) || r > unicode.MaxASCII {
+			return false
+		}
+	}
+	return true
 }
 
 func (r *Renderer) renderCodeSpan(_ util.BufWriter,
@@ -328,8 +350,8 @@ func (r *Renderer) renderLink(_ util.BufWriter,
 			linkPath = string(destination)
 		}
 
-		if !strings.HasPrefix(strings.ToLower(linkPath), "http://") &&
-			!strings.HasPrefix(strings.ToLower(linkPath), "https://") {
+		if !IsUrl(linkPath) {
+			// Treat as a file path if no URL scheme
 			linkPath = filepath.Join(r.GetBaseFilepath(), linkPath)
 			ext := filepath.Ext(linkPath)
 			// if empty or contains spaces
@@ -484,12 +506,13 @@ func (r *Renderer) renderWikiLink(_ util.BufWriter, source []byte, node ast.Node
 		r.SetMarkStart()
 	} else {
 		// Handle as regular link (same behavior as [[]] for both [[]] and ![[]])
-		if !strings.HasPrefix(strings.ToLower(linkPath), "http://") &&
-			!strings.HasPrefix(strings.ToLower(linkPath), "https://") {
+		if !IsUrl(linkPath) {
+			// Treat as a file path if no URL scheme
 			linkPath = filepath.Join(r.GetBaseFilepath(), linkPath)
 			ext := filepath.Ext(linkPath)
-			linkPath = cleanLinkSection(linkPath)
 			// if empty or contains spaces
+			linkPath = cleanLinkSection(linkPath)
+
 			// todo: should be improved
 			if ext == "" || strings.Contains(ext, " ") {
 				linkPath += ".md" // Default to .md if no extension is provided
